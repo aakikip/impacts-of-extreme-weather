@@ -22,8 +22,8 @@ library(spData)
 library(terra)
 library(kableExtra)
 library(ggplot2)
-library(spDataLarge)
-library(geodata)
+#library(spDataLarge)
+#library(geodata)
 library(stars)
 ```
 
@@ -68,9 +68,12 @@ houston_bbox <- st_bbox(c(xmin = -96.5, xmax = -94.5, ymin = 29, ymax = 30.5),
 # Convert bbox to polygon for cropping
 #houston <- st_as_sfc(houston_bbox)
 
-# Crop all three raster data to Houston area
+# Crop all raster data to Houston area
 nightlight_07_crop <- st_crop(nightlight_07, houston_bbox)
 nightlight_16_crop <- st_crop(nightlight_16, houston_bbox)
+
+plot(nightlight_07_crop)
+
 ```
 
 ```{r}
@@ -97,7 +100,6 @@ beforestorm <- tm_shape(nightlight_07_crop) +
 beforestorm
 ```
 
-
 ```{r fig.width=12, fig.height=5}
 # Map for February 16 (after storm)
 afterstorm <- tm_shape(nightlight_16_crop) +
@@ -122,22 +124,80 @@ afterstorm <- tm_shape(nightlight_16_crop) +
 afterstorm
 ```
 
-
 ```{r fig.width=12, fig.height=5}
 #| label: figure-beforeandafterstorm
 tmap_arrange(beforestorm, afterstorm, ncol = 2)
 ```
-```{r}
 
+**Exclude highways from the cropped blackout mask**
+
+```{r}
 # Calculate the difference in light intensity
 nightlight_diff <- nightlight_07 - nightlight_16
+nightlight_diff_crop <- st_crop(nightlight_diff, houston_bbox)
 
-# Create houston blackout mask
-nightlight_diff[nightlight_diff > 200] <- NA
+# Reclassify the difference raster
+mask <- nightlight_diff_crop
+mask[mask > 200] <- NA
 
-# Change into vector 
-blackout <- st_as_sf(nightlight_diff) %>% 
-  st_make_valid() -m ""
+# Vectorize the blackout mask
+blackout <- st_as_sf(mask,
+                     as_points = FALSE,
+                     merge = TRUE) %>%
+  st_make_valid() %>%
+  st_transform(crs = 'EPSG:3083')
+
+plot(blackout)
+
 ```
 
+```{r}
+# Read roads data
+highways <- st_read(here::here('data', 'gis_osm_roads_free_1.gpkg'),
+                 query = "SELECT * FROM gis_osm_roads_free_1 WHERE fclass = 'motorway'") %>%
+  st_transform(crs = 'EPSG:3083')
+```
 
+```{r}
+# Transform to EPSG:3083 and fix geometries
+#highways_fixed <- st_transform(highways, crs = 'EPSG:3083') #%>%
+  #st_make_valid()
+
+# Combine all highway geometries into one
+highways_union <- st_union(highways)
+
+# Create 200m buffer around all highways
+highways_buffer <- st_buffer(highways_union, dist = 200)
+
+#st_crs(blackout) == st_crs(highways_buffer)
+
+# Find areas that experienced blackouts further than 200m from highways
+blackout_far <- st_difference(blackout, highways_buffer)
+
+plot(blackout_far)
+
+```
+
+**Identify the number of homes likely impacted by blackouts**
+
+```{r}
+# Read building data
+buildings <- st_read(here::here('data',
+                          'gis_osm_buildings_a_free_1.gpkg'),
+  query = "SELECT *
+    FROM gis_osm_buildings_a_free_1
+    WHERE (type IS NULL AND name IS NULL)
+      OR type IN ('residential', 'apartments', 'house', 'static_caravan', 'detached')") %>% 
+    st_transform('EPSG:3083')
+
+```
+
+```{r}
+# Find homes in blackout areas
+blackout_union <- st_union(blackout_far)
+
+building_blackout <- st_intersects(buildings, st_sf(geometry = st_union(blackout_union)),
+                                   sparse = FALSE)[,1]
+```
+
+st_join 1 (census tract + building affected by blackout) st join 2 (census tract + cropped blackout) with reclassified mask
