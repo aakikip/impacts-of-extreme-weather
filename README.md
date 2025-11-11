@@ -27,11 +27,10 @@ This repository contains the following files 1. .gitignore 2. impacts-of-extreme
 
 **File Structure**
 
-```         
-EDS223-HW3
-└───README.md
-└───Rmd/Proj files    
-└─── texas_blackout.qmd # Name your qmd file a title that is representative of your analysis!
+```
+impacts-of-extreme-weather
+└───figs/
+    └── before-after-storm.jpeg
 └───.gitignore
     └───data
         └───gis_osm_buildings_a_free_1.gpkg
@@ -40,6 +39,11 @@ EDS223-HW3
             └───census tract gdb files
         └───VNP46A1
             └───VIIRS data files
+└───impacts-of-extreme-weather.Rproj
+└───README.md
+└───texas_blackout.html
+└───texas_blackout.pdf
+└───texas_blackout.qmd
 ```
 
 ### Data
