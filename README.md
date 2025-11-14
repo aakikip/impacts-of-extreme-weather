@@ -1,6 +1,6 @@
 ## Identifying the impacts of extreme weather
 
-This repository contains the details of the assignment 2 for the course EDS 223: Geospatial Analysis & Remote Sensing for the Master of Environmental Data Science (MEDS) program.
+This repository contains the details of the assignment 3 for the course EDS 223: Geospatial Analysis & Remote Sensing for the Master of Environmental Data Science (MEDS) program.
 
 The assignment focuses on identifying the impacts of a series of extreme winter storms in the Houston metropolitan area, Texas.
 
@@ -10,7 +10,7 @@ Climate change is increasing the frequency and severity of extreme weather event
 
 This assignment aims to identify the impacts of these extreme winter storms by estimating the number of homes in the Houston metropolitan area that lost power and examining whether these impacts were disproportionately distributed. The analysis is based on remotely sensed night light data.
 
-All analysis were done on R version 4.5.1 using the following libraries tidyverse, sf, here and tmap.
+All analysis were done on R version 4.5.1 using the following libraries `tidyverse`, `sf`, `tmap`, `terra` and `stars`.
 
 ### Objective of the assignment
 
@@ -23,7 +23,7 @@ All analysis were done on R version 4.5.1 using the following libraries tidyvers
 
 ### Contents
 
-This repository contains the following files 1. .gitignore 2. impacts-of-extreme-weather.Rproj 3. .qmd 4. figs: visual representation that is derived from the raw data 5. README.md
+This repository contains the following files 1. .gitignore 2. impacts-of-extreme-weather.Rproj 3. texas_blackout.qmd 4. texas_blackout.pdf 5. figs: visual representation that is derived from the raw data 6. README.md
 
 **File Structure**
 
