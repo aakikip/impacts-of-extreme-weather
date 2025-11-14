@@ -57,18 +57,18 @@ To access the data, [click here](https://drive.google.com/file/d/1bTk62xwOzBqWmm
 #### Data Source
 
 **Night lights**
-The NASA’s Worldview is explored for extracting the data around the day of the storm. There are several days with too much cloud cover to be useful, but 2021-02-07 and 2021-02-16 provides two clear, contrasting images to visualize the extent of the power outage in Texas.
+- The NASA’s Worldview is explored for extracting the data around the day of the storm. There are several days with too much cloud cover to be useful, but 2021-02-07 and 2021-02-16 provides two clear, contrasting images to visualize the extent of the power outage in Texas.
 
 VIIRS data is distributed through NASA’s [Level-1 and Atmospheric Archive & Distribution System Distributed Active Archive Center (LAADS DAAC)](https://ladsweb.modaps.eosdis.nasa.gov/). Many NASA Earth data products are distributed in 10x10 degree tiles in sinusoidal equal-area projection. Tiles are identified by their horizontal and vertical position in the grid. Houston lies on the border of tiles h08v05 and h08v06. These two tiles per date were pre-downloaded and provided by the team.
 
 **Roads**
-We used Geofabrik’s download sites to retrieve a shapefile of all highways in Texas and prepared a [Geopackage (.gpkg file)](https://download.geofabrik.de/) containing just the subset of roads that intersect the Houston metropolitan area. 
+- We used Geofabrik’s download sites to retrieve a shapefile of all highways in Texas and prepared a [Geopackage (.gpkg                    file)](https://download.geofabrik.de/) containing just the subset of roads that intersect the Houston metropolitan area. 
 
 **Houses**
-The data were downloaded from [Geofabrik](https://download.geofabrik.de/) and processed to create a GeoPackage containing only residential buildings within the Houston metropolitan area.
+- The data were downloaded from [Geofabrik](https://download.geofabrik.de/) and processed to create a GeoPackage containing only residential buildings within the Houston metropolitan area.
 
 **Socioeconomic**
-The socioecoomic data were obtained from the [U.S. Census Bureau’s American Community Survey](https://www.census.gov/programs-surveys/acs) for census tracts in 2019.
+- The socioecoomic data were obtained from the [U.S. Census Bureau’s American Community Survey](https://www.census.gov/programs-surveys/acs) for census tracts in 2019.
 
 ### Course Information
 
